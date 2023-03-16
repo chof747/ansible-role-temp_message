@@ -1,0 +1,6 @@
+---
+# defaults file for temp_message
+host: mqtt.local
+user: server
+password: server
+device: "{{inventory_hostname}}"

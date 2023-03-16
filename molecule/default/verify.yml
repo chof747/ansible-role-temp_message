@@ -1,0 +1,16 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: "Ensure /root/temp-monitor.sh is present and set"
+    become: true
+    lineinfile:
+      name: /root/temp-monitor.sh
+      line: "mosquitto_pub -h mqtt.local -u server -P server -t tele/rpibox/SENSOR/rpi/temp -m $cpu_temp"
+      state: present
+    check_mode: yes
+    register: conf
+    failed_when: (conf is changed) or (conf is failed)

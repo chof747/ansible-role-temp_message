@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include chof.temp_message"
+      include_role:
+        name: "chof.temp_message"
