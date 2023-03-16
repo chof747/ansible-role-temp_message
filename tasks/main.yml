@@ -24,3 +24,15 @@
     user: root
     job: "/root/temp-monitor.sh > /var/log/tempmonitor.log 2>&1"
     cron_file: telemetry
+
+- name: Enable cron service
+  systemd:
+    name: cron.service
+    enabled: yes
+  register: cron_enabled
+
+- name: Start cron service
+  systemd:
+    name: cron.service
+    state: started
+  when: cron_enabled.changed
