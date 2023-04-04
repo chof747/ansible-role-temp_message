@@ -19,6 +19,7 @@
     mode: o+x
 
 - name: Setup cronjob in cron.d directory under telemetry
+  become: true
   cron:
     name: Temperature Monitor
     user: root
@@ -26,6 +27,7 @@
     cron_file: telemetry
 
 - name: Enable cron service
+  become: true
   systemd:
     name: cron.service
     enabled: yes
