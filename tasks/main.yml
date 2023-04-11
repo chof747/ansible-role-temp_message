@@ -3,7 +3,7 @@
 
 - name: Check that mosquitto-clients is installed
   become: true
-  apt:
+  ansible.builtin.apt:
     pkg:
       - mosquitto-clients
       - cron
@@ -11,7 +11,7 @@
 
 - name: Copy the temperature measurement script to the host
   become: true
-  template:
+  ansible.builtin.template:
     src: temp-monitor.sh.j2
     dest: /root/temp-monitor.sh
     owner: root
@@ -20,7 +20,7 @@
 
 - name: Setup cronjob in cron.d directory under telemetry
   become: true
-  cron:
+  ansible.builtin.cron:
     name: Temperature Monitor
     user: root
     job: "/root/temp-monitor.sh > /var/log/tempmonitor.log 2>&1"
@@ -28,13 +28,7 @@
 
 - name: Enable cron service
   become: true
-  systemd:
+  ansible.builtin.systemd:
     name: cron.service
     enabled: yes
-  register: cron_enabled
-
-- name: Start cron service
-  systemd:
-    name: cron.service
-    state: started
-  when: cron_enabled.changed
+  notify: Start crond
