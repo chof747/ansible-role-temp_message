@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Disk Space
+df  \
+| grep  '^\/dev\/{{ main_partition | default('root') }}' \
+| LC_NUMERIC=en_US.UTF-8 awk '{ printf("{ \"size\": %.2f, \"used\": %.2f, \"free\": %.2f, \"unit\": { \"size\": \"MB\", \"used\": \"MB\", \"free\": \"MB\" } }", $2/1024, $3/1024, $4/1024) }' \
+| mosquitto_pub -h {{ host }} -u {{ user }} -P {{ password }} -t "tele/{{ device }}/SENSOR/rpi/diskspace" -l
